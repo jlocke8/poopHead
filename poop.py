@@ -1,7 +1,8 @@
-#!/usr/bin/python3
+#/usr/bin/python3
 import pygame
 import sys
 from pygame.locals import *
+from spritesheet import SpriteSheet
 
 
 pygame.init()
@@ -22,27 +23,36 @@ screen.blit(background, (0,0))
 
 pygame.display.set_caption("Poop On Head")
 
+backgroundImage = pygame.image.load("cartoonbackground.jpg").convert()
 
 class player:
-    playerImage = pygame.image.load("pigeonStand.png")
     xpos = 0
     ypos = 0
     xdelta = 0
     ydelta = 0
     speed = 1.5
+    playerImage = pygame.image.load("pigeonStand2.png")
+    playerFly = SpriteSheet("pigeonFly.jpg")
+    playerFlying = playerFly.load_grid_images(2, 3,70 ,70 ,50,0)
 
+    counter = 0
     def blitPlayer(self, x,y):
-        screen.blit(self.playerImage, (x,y))
-    
+        #screen.blit(self.playerImage, (x,y))
+        screen.blit(self.playerFlying[self.counter], (x,y))
+        self.counter +=1
+        if self.counter >= len(self.playerFlying):
+            self.counter = 0;
+
     
 
 player1 = player()
 
 
+screen.blit(backgroundImage, (0,0))
 
 running = True
 while running:
-    pygame.display.update()
+#    pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -68,7 +78,11 @@ while running:
    #             player1.ydelta = 0
    # player1.xpos += player1.xdelta
    # player1.ypos += player1.ydelta
-    player1.blitPlayer(player1.xpos, player1.ypos) 
+    #screen.fill((0,255,255))
+    screen.blit(backgroundImage, (0,0))
+    player1.blitPlayer(player1.xpos, player1.ypos)
+    pygame.display.update()
+
 
 
 
