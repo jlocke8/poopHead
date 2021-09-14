@@ -26,6 +26,8 @@ pygame.display.set_caption("Poop On Head")
 backgroundImage = pygame.image.load("cartoonbackground.jpg").convert()
 
 class player:
+    isMoving = False
+    isLeft = True
     xpos = 0
     ypos = 0
     xdelta = 0
@@ -33,15 +35,27 @@ class player:
     speed = 1.5
     playerImage = pygame.image.load("pigeonStand2.png")
     playerFly = SpriteSheet("pigeonFly.jpg")
-    playerFlying = playerFly.load_grid_images(2, 3,70 ,70 ,50,0)
+    playerFly2 = SpriteSheet("pigeonFly.jpg")
 
-    counter = 0
+    playerFly.flip(True, False)
+    
+    playerFlying = playerFly.load_grid_images(2, 3,70 ,70 ,50,0)
+    playerFlying2 = playerFly2.load_grid_images(2, 3,70 ,70 ,50,0)
+
+    FlyIndex = 0
+    FlyinvSpeed = 20;   #larger number is slower
+
+    framecounter = 0
     def blitPlayer(self, x,y):
         #screen.blit(self.playerImage, (x,y))
-        screen.blit(self.playerFlying[self.counter], (x,y))
-        self.counter +=1
-        if self.counter >= len(self.playerFlying):
-            self.counter = 0;
+        self.framecounter +=1
+        if self.framecounter >= self.FlyinvSpeed:
+            self.framecounter = 0;
+            self.FlyIndex = (self.FlyIndex +1) % len(self.playerFlying)
+        if self.isLeft is True:
+            screen.blit(self.playerFlying[self.FlyIndex],(x,y))
+        else:
+            screen.blit(self.playerFlying2[self.FlyIndex], (x,y))
 
     
 
@@ -58,10 +72,22 @@ while running:
             running = False
             pygame.quit()
             sys.exit(0)
+    keys = None;
     keys = pygame.key.get_pressed()
     player1.xpos += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT])*player1.speed
     player1.ypos += (keys[pygame.K_DOWN] - keys[pygame.K_UP])*player1.speed
-       
+    if keys is None:
+        player.isMoving = False
+    else:
+        player.isMoving = True
+        if keys[pygame.K_LEFT] is 1:
+            player.isLeft = True
+        if keys[pygame.K_RIGHT] is 1:
+            player.isLeft = False 
+
+    
+
+
    #    if event.type == pygame.KEYDOWN:
    #         if event.key == pygame.K_LEFT:
    #             player1.xdelta = -1.5

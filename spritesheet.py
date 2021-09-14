@@ -23,6 +23,9 @@ class SpriteSheet:
             print(f"Unable to load spritesheet image: {filename}")
             raise SystemExit(e)
 
+    def flip(self, horizontal, vertical):
+        self.sheet = pygame.transform.flip(self.sheet, horizontal, vertical)
+        return self
 
     def image_at(self, rectangle, colorkey = None):
         """Load a specific image from a specific rectangle."""
