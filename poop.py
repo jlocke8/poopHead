@@ -25,6 +25,10 @@ pygame.display.set_caption("Poop On Head")
 
 backgroundImage = pygame.image.load("cartoonbackground.jpg").convert()
 
+def scale (surface, width,Height):
+    scaledImage = pygame.transform.scale(surface, (width,Height))
+    return scaledImage
+
 class player:
     isMoving = False
     isLeft = True
@@ -34,16 +38,16 @@ class player:
     ydelta = 0
     speed = 1.5
     playerImage = pygame.image.load("pigeonStand2.png")
-    playerFly = SpriteSheet("pigeonFly.jpg")
-    playerFly2 = SpriteSheet("pigeonFly.jpg")
-
-    playerFly.flip(True, False)
+    playerFly = SpriteSheet("pigeonFly.png")
+    playerFly2 = SpriteSheet("pigeonFly.png")
     
+    playerFly.flip(True, False)
+    #playerFly.colokey(None)
     playerFlying = playerFly.load_grid_images(2, 3,70 ,70 ,50,0)
     playerFlying2 = playerFly2.load_grid_images(2, 3,70 ,70 ,50,0)
 
     FlyIndex = 0
-    FlyinvSpeed = 20;   #larger number is slower
+    FlyinvSpeed = 5;   #larger number is slower
 
     framecounter = 0
     def blitPlayer(self, x,y):
@@ -53,11 +57,11 @@ class player:
             self.framecounter = 0;
             self.FlyIndex = (self.FlyIndex +1) % len(self.playerFlying)
         if self.isLeft is True:
-            screen.blit(self.playerFlying[self.FlyIndex],(x,y))
+            screen.blit(scale(self.playerFlying[self.FlyIndex], 99,99),(x,y))
         else:
-            screen.blit(self.playerFlying2[self.FlyIndex], (x,y))
+            screen.blit(scale(self.playerFlying2[self.FlyIndex],99,99), (x,y))
 
-    
+     
 
 player1 = player()
 

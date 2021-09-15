@@ -13,26 +13,34 @@
 import pygame
 
 
+
 class SpriteSheet:
 
     def __init__(self, filename):
         """Load the sheet."""
-        try:
-            self.sheet = pygame.image.load(filename).convert()
+        try:            
+            self.sheet = pygame.image.load(filename).convert_alpha()
+            
         except pygame.error as e:
-            print(f"Unable to load spritesheet image: {filename}")
+            print("Unable to load spritesheet image: {filename}")
             raise SystemExit(e)
 
     def flip(self, horizontal, vertical):
         self.sheet = pygame.transform.flip(self.sheet, horizontal, vertical)
         return self
 
+    def colokey(self, colorkey):
+        self.sheet.set_colorkey(colorkey)
+        
+
     def image_at(self, rectangle, colorkey = None):
         """Load a specific image from a specific rectangle."""
         # Loads image from x, y, x+offset, y+offset.
         rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
+        image = pygame.Surface(rect.size).convert_alpha()
+        image.fill((255,255,255,0))
         image.blit(self.sheet, (0, 0), rect)
+
         if colorkey is not None:
             if colorkey is -1:
                 colorkey = image.get_at((0,0))
